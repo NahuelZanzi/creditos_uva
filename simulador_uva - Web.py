@@ -22,14 +22,41 @@ try:
     uva = valor_uva
     
     st.markdown(f"""
-    <div style="position:fixed; left:20px; top:100px; background:white; padding:15px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1); width:250px; z-index:999;">
-        <div style="padding:10px 15px; margin:5px 0; font-size:18px; font-weight:bold; border-radius:5px; border-left:4px solid #4CAF50;">
+    <style>
+    @media (max-width: 768px) {{
+        .dolar-box {{
+            position: relative !important;
+            width: 90% !important;
+            left: auto !important;
+            top: auto !important;
+            margin: 20px auto !important;
+            font-size: 14px !important;
+        }}
+    }}
+    
+    .dolar-box {{
+        position: fixed;
+        left: 20px;
+        top: 100px;
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        width: 250px;
+        z-index: 999;
+        font-size: 18px;
+        font-weight: bold;
+    }}
+    </style>
+    
+    <div class="dolar-box">
+        <div style="padding:10px 15px; margin:5px 0; border-radius:5px; border-left:4px solid #4CAF50;">
             🏦 Oficial: ${oficial['venta']:,.0f}
         </div>
-        <div style="padding:10px 15px; margin:5px 0; font-size:18px; font-weight:bold; border-radius:5px; border-left:4px solid #2196F3;">
+        <div style="padding:10px 15px; margin:5px 0; border-radius:5px; border-left:4px solid #2196F3;">
             💵 Blue: ${blue['venta']:,.0f}
         </div>
-        <div style="padding:10px 15px; margin:5px 0; font-size:18px; font-weight:bold; border-radius:5px; border-left:4px solid #FF9800;">
+        <div style="padding:10px 15px; margin:5px 0; border-radius:5px; border-left:4px solid #FF9800;">
             📊 UVA: ${uva:,.0f}
         </div>
     </div>
