@@ -15,7 +15,9 @@ valor_uva = int(float(next(tr.find_all('td')[2].text.strip() for tr in __import_
 st.set_page_config(page_title="Simulador Crédito UVA", layout="centered")
 
 #dolares
-
+oficial = requests.get("https://dolarapi.com/v1/dolares/oficial").json()
+blue = requests.get("https://dolarapi.com/v1/dolares/blue").json()
+uva = valor_uva
 st.markdown(f"""
 <style>
 @media (max-width: 768px) {{
