@@ -205,17 +205,16 @@ df = pd.read_excel(url_excel, sheet_name="Bancos")
 bancos_disponibles = [col for col in df.columns if col not in ['Categoria']]
 
 if bancos_disponibles:
-    # Selector de banco con estilo mejorado
     st.markdown("### Selecciona un banco para ver su información:")
-    banco_seleccionado = st.selectbox(
-        "",
+    banco_seleccionado = st.radio(
+        label="",
         options=bancos_disponibles,
         label_visibility="collapsed"
     )
-    
-    # Crear dataframe con el banco seleccionado
+
     df_filtrado = df[['Categoria', banco_seleccionado]].copy()
-    df_filtrado.columns = ['Categoría', banco_seleccionado]  # Nombre dinámico para la columna
+    df_filtrado.columns = ['Categoría', banco_seleccionado]
+
 
 
 
