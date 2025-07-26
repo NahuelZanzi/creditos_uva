@@ -9,14 +9,14 @@ from bs4 import BeautifulSoup
 
 
 
-valor_uva = int(float(next(tr.find_all('td')[2].text.strip() for tr in __import__('bs4').BeautifulSoup(__import__('requests').get("https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp", verify=False).text, 'html.parser').find_all('tr') if tr.find('td') and "Unidad de Valor Adquisitivo (UVA)" in tr.find('td').text).replace('.', '').replace(',', '.')))
+valor_uva = st.cache_data(ttl=60*60*20)(lambda: int(float(next(tr.find_all('td')[2].text.strip() for tr in __import__('bs4').BeautifulSoup(__import__('requests').get("https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp", verify=False).text, 'html.parser').find_all('tr') if tr.find('td') and "Unidad de Valor Adquisitivo (UVA)" in tr.find('td').text).replace('.', '').replace(',', '.'))))()
 
 # Configuración de página
 st.set_page_config(page_title="Simulador Crédito UVA", layout="centered")
 
 #dolares
-oficial = requests.get("https://dolarapi.com/v1/dolares/oficial").json()
-blue = requests.get("https://dolarapi.com/v1/dolares/blue").json()
+oficial = st.cache_data(ttl=60*60*20)(lambda: requests.get("https://dolarapi.com/v1/dolares/oficial").json())()
+blue = st.cache_data(ttl=60*60*20)(lambda: requests.get("https://dolarapi.com/v1/dolares/blue").json())()
 uva = valor_uva
 st.markdown(f"""
 <style>
