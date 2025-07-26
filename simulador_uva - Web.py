@@ -16,54 +16,54 @@ st.set_page_config(page_title="Simulador Crédito UVA", layout="centered")
 
 #dolares
 
-try:
-    oficial = requests.get("https://dolarapi.com/v1/dolares/oficial").json()
-    blue = requests.get("https://dolarapi.com/v1/dolares/blue").json()
-    uva = valor_uva
-    
-    st.markdown(f"""
-    <style>
-    @media (max-width: 768px) {{
-        .dolar-box {{
-            position: relative !important;
-            width: 90% !important;
-            left: auto !important;
-            top: auto !important;
-            margin: 20px auto !important;
-            font-size: 14px !important;
-        }}
-    }}
-    
+st.markdown(f"""
+<style>
+@media (max-width: 768px) {{
     .dolar-box {{
-        position: fixed;
-        left: 20px;
-        top: 100px;
-        background: white;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        width: 250px;
-        z-index: 999;
-        font-size: 18px;
-        font-weight: bold;
+        position: relative !important;
+        width: 90% !important;
+        left: auto !important;
+        top: auto !important;
+        margin: 20px auto !important;
+        font-size: 14px !important;
     }}
-    </style>
-    
-    <div class="dolar-box">
-        <div style="padding:10px 15px; margin:5px 0; border-radius:5px; border-left:4px solid #4CAF50;">
-            🏦 Oficial: ${oficial['venta']:,.0f}
-        </div>
-        <div style="padding:10px 15px; margin:5px 0; border-radius:5px; border-left:4px solid #2196F3;">
-            💵 Blue: ${blue['venta']:,.0f}
-        </div>
-        <div style="padding:10px 15px; margin:5px 0; border-radius:5px; border-left:4px solid #FF9800;">
-            📊 UVA: ${uva:,.0f}
-        </div>
+}}
+
+.dolar-box {{
+    position: fixed;
+    left: 20px;
+    top: 100px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 250px;
+    z-index: 999;
+    font-size: 18px;
+    font-weight: bold;
+    color: #222222;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}}
+
+.dolar-box > div {{
+    color: #222222;
+}}
+</style>
+
+<div class="dolar-box">
+    <div style="padding:10px 15px; margin:5px 0; border-radius:5px; border-left:4px solid #4CAF50;">
+        🏦 Oficial: ${oficial['venta']:,.0f}
     </div>
-    """, unsafe_allow_html=True)
-    
-except Exception as e:
-    st.error(f"Error al obtener datos: {str(e)}")
+    <div style="padding:10px 15px; margin:5px 0; border-radius:5px; border-left:4px solid #2196F3;">
+        💵 Blue: ${blue['venta']:,.0f}
+    </div>
+    <div style="padding:10px 15px; margin:5px 0; border-radius:5px; border-left:4px solid #FF9800;">
+        📊 UVA: ${uva:,.0f}
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 
 # Estilos custom mejorados
 st.markdown("""
@@ -205,15 +205,17 @@ df = pd.read_excel(url_excel, sheet_name="Bancos")
 bancos_disponibles = [col for col in df.columns if col not in ['Categoria']]
 
 if bancos_disponibles:
+    # Selector de banco con estilo mejorado
     st.markdown("### Selecciona un banco para ver su información:")
-    banco_seleccionado = st.radio(
-        label="",
+    banco_seleccionado = st.selectbox(
+        "",
         options=bancos_disponibles,
         label_visibility="collapsed"
     )
-
+    
+    # Crear dataframe con el banco seleccionado
     df_filtrado = df[['Categoria', banco_seleccionado]].copy()
-    df_filtrado.columns = ['Categoría', banco_seleccionado]
+    df_filtrado.columns = ['Categoría', banco_seleccionado]  # Nombre dinámico para la columna
 
 
 
