@@ -123,9 +123,7 @@ st.markdown("""
 # Sección Simulador (sin cambios)
 st.markdown('<div id="simulador"></div>', unsafe_allow_html=True)
 st.title("\n\n\n\n🏡 Simulador de Crédito UVA")
-st.markdown("Calculadora estimativa de crédito hipotecario en UVA. 
-            ¡Importante! Se trata de valores aproximados y no representan el monto exacto que vas a pagar.
-            Completá los valores abajo y presioná **Calcular**:")
+st.markdown("Calculadora estimativa de crédito hipotecario en UVA. \n ¡Importante! Se trata de valores aproximados y no representan el monto exacto que vas a pagar.\nCompletá los valores abajo y presioná **Calcular**:")
 
 valor_propiedad = st.number_input("💰 Valor de la propiedad (USD)", min_value=0, step=1000, format="%d")
 
