@@ -1,75 +1,121 @@
 import streamlit as st
+import pandas as pd
+import os
+import requests
+from datetime import datetime
+from PIL import Image
+from bs4 import BeautifulSoup
+
+
+
+
+valor_uva = int(float(next(tr.find_all('td')[2].text.strip() for tr in __import__('bs4').BeautifulSoup(__import__('requests').get("https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp", verify=False).text, 'html.parser').find_all('tr') if tr.find('td') and "Unidad de Valor Adquisitivo (UVA)" in tr.find('td').text).replace('.', '').replace(',', '.')))
 
 # Configuración de página
 st.set_page_config(page_title="Simulador Crédito UVA", layout="centered")
 
-# CSS personalizado para ajustes visuales
+#dolares
+
+try:
+    oficial = requests.get("https://dolarapi.com/v1/dolares/oficial").json()
+    blue = requests.get("https://dolarapi.com/v1/dolares/blue").json()
+    uva = valor_uva
+    
+    st.markdown(f"""
+    <div style="position:fixed; left:20px; top:100px; background:white; padding:15px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1); width:250px; z-index:999;">
+        <div style="padding:10px 15px; margin:5px 0; font-size:18px; font-weight:bold; border-radius:5px; border-left:4px solid #4CAF50;">
+            🏦 Oficial: ${oficial['venta']:,.0f}
+        </div>
+        <div style="padding:10px 15px; margin:5px 0; font-size:18px; font-weight:bold; border-radius:5px; border-left:4px solid #2196F3;">
+            💵 Blue: ${blue['venta']:,.0f}
+        </div>
+        <div style="padding:10px 15px; margin:5px 0; font-size:18px; font-weight:bold; border-radius:5px; border-left:4px solid #FF9800;">
+            📊 UVA: ${uva:,.0f}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+except Exception as e:
+    st.error(f"Error al obtener datos: {str(e)}")
+
+# Estilos custom mejorados
 st.markdown("""
     <style>
-        /* Ajustar inputs font size */
-        .stTextInput>div>div>input,
-        .stNumberInput>div>div>input {
+        /* Navegación mejorada */
+        .sidebar-nav {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 999;
+            width: 250px;
+        }
+        .sidebar-nav div {
+            cursor: pointer;
+            padding: 10px 15px;
+            margin: 5px 0;
             font-size: 18px;
-        }
-        /* Estilo labels y valores resultado centrados */
-        .metric-label {
-            font-size: 20px !important;
             font-weight: bold;
-            color: #444;
-            text-align: center;
-        }
-        .metric-value {
-            font-size: 20px !important;
-            text-align: center;
-        }
-        /* Botón gris oscuro */
-        .stButton>button {
-            background-color: #555555;
-            color: white;
             border-radius: 5px;
-            font-size: 16px;
-            padding: 6px 12px;
+            transition: all 0.3s;
         }
-        /* Mover título más arriba, a la izquierda y reducir margen arriba */
+        .sidebar-nav div:hover {
+            background-color: #f0f2f6;
+            transform: translateX(5px);
+        }
+        
+        /* Botones más grandes */
+        .stButton>button {
+            font-size: 18px !important;
+            padding: 10px 24px !important;
+            height: auto !important;
+        }
+        
+        /* Ajustes generales */
+        header > div:first-child {
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+        }
         .css-1v3fvcr h1 {
-            margin-top: 5px !important;
-            margin-bottom: 10px !important;
+            margin-top: 0px !important;
+            margin-bottom: 8px !important;
             text-align: left;
         }
-        /* Reducir espacio blanco arriba de todo (header) para que no haya scroll */
-        header > div:first-child {
-            padding-top: 5px !important;
-            padding-bottom: 5px !important;
-        }
-        /* Centrar contenido columnas resultados */
-        .stColumns [class*="css-"] > div {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        main > div.block-container {
+            padding-left: 300px !important;
         }
     </style>
+
 """, unsafe_allow_html=True)
 
-st.title("🏡 Simulador de Crédito UVA")
-
+# Sección Simulador (sin cambios)
+st.markdown('<div id="simulador"></div>', unsafe_allow_html=True)
+st.title("\n\n\n\n🏡 Simulador de Crédito UVA")
 st.markdown("Calculadora interactiva de crédito hipotecario en UVA. Completá los valores abajo y presioná **Calcular**:")
 
-# Entradas usuario
-valor_propiedad = st.number_input("💰 Valor de la propiedad (USD)", min_value=0.0, step=1000.0)
+valor_propiedad = st.number_input("💰 Valor de la propiedad (USD)", min_value=0, step=1000, format="%d")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    comision_inmobiliaria = round(st.number_input("🏠 Comisión inmobiliaria (%)", min_value=0.0, step=0.1, format="%.1f", value=4.5), 1) / 100
-    costo_gastos = round(st.number_input("🧾 Costo gastos (escribano, sellos, etc.) (%)", min_value=0.0, step=0.1, format="%.1f", value=4.5), 1) / 100
-    interes_banco = round(st.number_input("🏦 Interés del banco (%)", min_value=0.0, step=0.1, format="%.1f", value=4.5), 1) / 100
+    comision_inmobiliaria = st.number_input("🏠 Comisión inmobiliaria (%)", min_value=0.0, max_value=100.0, step=0.1, value=4.5, format="%.1f") / 100
+    costo_gastos = st.number_input("📟 Costo gastos (escribano, sellos, etc.) (%)", min_value=0.0, max_value=100.0, step=0.1, value=4.5, format="%.1f") / 100
+    interes_banco = st.number_input("🏦 Interés del banco (%)", min_value=0.0, max_value=100.0, step=0.1, value=4.5, format="%.1f") / 100
 
 with col2:
-    porcentaje_prestamo = round(st.number_input("💵 % que te presta el banco (%)", min_value=0.0, step=0.1, format="%.1f", value=75.0), 1) / 100
+    porcentaje_prestamo = st.number_input("💵 % que te presta el banco (%)", min_value=0, max_value=100, step=1, value=75, format="%d") / 100
     anios_credito = st.number_input("📅 Años del crédito", min_value=1, value=20)
 
 calcular = st.button("Calcular")
+
+
+def cuota_sistema_frances(prestamo_maximo, interes_banco, total_cuotas):
+    i = interes_banco / 12  # tasa mensual decimal
+    cuota = prestamo_maximo * (i * (1 + i)**total_cuotas) / ((1 + i)**total_cuotas - 1)
+    return cuota
 
 if calcular:
     gastos = valor_propiedad * costo_gastos
@@ -77,37 +123,121 @@ if calcular:
     total_con_gastos = valor_propiedad + gastos + comision
     prestamo_maximo = valor_propiedad * porcentaje_prestamo
     ahorro_necesario = total_con_gastos - prestamo_maximo
-    cuota_mensual = prestamo_maximo / (12 * anios_credito)
+    total_cuotas = (12 * anios_credito)
+    cuota_mensual = cuota_sistema_frances(prestamo_maximo,interes_banco,total_cuotas)
+    ingresos_minimos = (cuota_mensual * oficial['venta']) / 0.25
 
-    # Formatear números sin decimales y con separador de miles '.'
+
+   
     def format_num(n):
         return f"{int(round(n)):,}".replace(",", ".")
 
+    st.markdown('<div id="resultados"></div>', unsafe_allow_html=True)
     st.markdown("---")
     st.subheader("📊 Resultados del cálculo")
 
-    col_res1, col_res2, col_res3 = st.columns(3)
-    with col_res1:
+     # Fila 1
+    col1, col2, col3 = st.columns(3)
+    with col1:
         st.markdown('<div class="metric-label">🔧 Gastos estimados</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="metric-value">USD {format_num(gastos)}</div>', unsafe_allow_html=True)
-
-    with col_res2:
+    with col2:
         st.markdown('<div class="metric-label">🏠 Comisión inmobiliaria</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="metric-value">USD {format_num(comision)}</div>', unsafe_allow_html=True)
-
-    with col_res3:
+    with col3:
         st.markdown('<div class="metric-label">💸 Ahorro necesario</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="metric-value">USD {format_num(ahorro_necesario)}</div>', unsafe_allow_html=True)
 
-    col_res4, col_res5, col_res6 = st.columns(3)
-    with col_res4:
+    # Fila 2
+    col4, col5, col6 = st.columns(3)
+    with col4:
         st.markdown('<div class="metric-label">🏷️ Total con gastos</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="metric-value">USD {format_num(total_con_gastos)}</div>', unsafe_allow_html=True)
-
-    with col_res5:
+    with col5:
         st.markdown('<div class="metric-label">🏦 Préstamo máximo</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="metric-value">USD {format_num(prestamo_maximo)}</div>', unsafe_allow_html=True)
-
-    with col_res6:
+    with col6:
         st.markdown('<div class="metric-label">📅 Cuota mensual</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="metric-value">USD {format_num(cuota_mensual)}</div>', unsafe_allow_html=True)
+
+    # Fila 3: solo una métrica centrada
+    col_left, col_center, col_right = st.columns([1, 0.2, 90])
+    with col_right:
+        st.markdown('<div class="metric-label">💼 Ingresos mínimos requeridos</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="metric-value">ARS {format_num(ingresos_minimos)}</div>', unsafe_allow_html=True)
+# Info Bancos
+st.markdown('<div id="info_banco"></div>', unsafe_allow_html=True)
+st.markdown("## 🏦 Información por Banco")
+
+# Cargar datos
+ruta_excel = "C:/Users/USUARIO/Desktop/UVA/Comprar Propiedad - Credito UVA.xlsx"
+df = pd.read_excel(ruta_excel, sheet_name="Bancos")
+
+# Lista de bancos disponibles (excluyendo 'Categoria' y 'Ciudad')
+bancos_disponibles = [col for col in df.columns if col not in ['Categoria']]
+
+if bancos_disponibles:
+    # Selector de banco con estilo mejorado
+    st.markdown("### Selecciona un banco para ver su información:")
+    banco_seleccionado = st.selectbox(
+        "",
+        options=bancos_disponibles,
+        label_visibility="collapsed"
+    )
+    
+    # Crear dataframe con el banco seleccionado
+    df_filtrado = df[['Categoria', banco_seleccionado]].copy()
+    df_filtrado.columns = ['Categoría', banco_seleccionado]  # Nombre dinámico para la columna
+
+
+
+
+    #Imagenes
+
+
+    # Mapeo banco -> nombre archivo imagen PNG
+    imagenes_bancos = {
+    "galicia": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\galicia.png",
+    "comafi": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\comafi.png",
+    "bbva": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\bbva.png",
+    "hipotecario": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\hipotecario.png",
+    "supervielle": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\Supervielle.png",
+    "banco nación": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\nacion.png",
+    "banco ciudad": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\ciudad.png",
+    "santander": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\santander.png",
+    "patagonia": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\patagonia.png",
+    "macro": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\macro.png",
+    "brubank": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\Brubank.png",
+    "icbc": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\ICBC.png",
+    "credicoop": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\credicoop.png",
+    "banco del sol": r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco\banco del sol.png"
+    }
+
+
+    # Mostrar imagen si existe para el banco seleccionado
+    banco_key = banco_seleccionado.lower()
+
+    if banco_key in imagenes_bancos:
+            try:
+                
+                imagen = Image.open(imagenes_bancos[banco_key])
+                st.image(imagen, width=180, output_format="PNG")  # tamaño chico, ajustá si querés
+                
+            except Exception as e:
+                st.error(f"No se pudo cargar la imagen de {banco_seleccionado}: {e}")
+
+
+    # Mostrar tabla mejorada
+    st.dataframe(
+        df_filtrado,
+        height=min(400, 35 * (len(df_filtrado) + 1)),
+        width=700,
+        hide_index=True,
+        column_config={
+            'Categoría': st.column_config.TextColumn(width="medium"),
+            banco_seleccionado: st.column_config.TextColumn(width="medium")
+        }
+    )
+else:
+    st.error("No se encontraron columnas de bancos en el archivo.")
+
