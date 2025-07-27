@@ -5,8 +5,13 @@ from PIL import Image
 from bs4 import BeautifulSoup
 
 
-   def format_num(n):
-        return f"{int(round(n)):,}".replace(",", ".")
+def format_num(n):
+     return f"{int(round(n)):,}".replace(",", ".")
+   
+def cuota_sistema_frances(prestamo_maximo, interes_banco, total_cuotas):
+    i = interes_banco / 12  # tasa mensual decimal
+    cuota = prestamo_maximo * (i * (1 + i)**total_cuotas) / ((1 + i)**total_cuotas - 1)
+    return cuota
 
 valor_uva = st.cache_data(ttl=60*60*20)(lambda: int(float(next(tr.find_all('td')[2].text.strip().replace('.', '').replace(',', '.') for tr in BeautifulSoup(requests.get("https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp", verify=False).text, 'html.parser').find_all('tr') if tr.find('td') and "Unidad de Valor Adquisitivo (UVA)" in tr.find('td').text))))()
 
@@ -144,10 +149,7 @@ with col2:
 calcular = st.button("Calcular")
 
 
-def cuota_sistema_frances(prestamo_maximo, interes_banco, total_cuotas):
-    i = interes_banco / 12  # tasa mensual decimal
-    cuota = prestamo_maximo * (i * (1 + i)**total_cuotas) / ((1 + i)**total_cuotas - 1)
-    return cuota
+
 
 if calcular:
     gastos = valor_propiedad * costo_gastos
