@@ -159,7 +159,7 @@ if calcular:
     ahorro_necesario = total_con_gastos - prestamo_maximo
     total_cuotas = (12 * anios_credito)
     cuota_mensual = cuota_sistema_frances(prestamo_maximo,interes_banco,total_cuotas)
-    ingresos_minimos = (cuota_mensual * 1270) / 0.25
+    ingresos_minimos = (cuota_mensual * oficial['venta']) / 0.25
 
     st.markdown('<div id="resultados"></div>', unsafe_allow_html=True)
     st.markdown("---")
