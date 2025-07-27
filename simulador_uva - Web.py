@@ -20,7 +20,7 @@ valor_uva = st.cache_data(ttl=60*60*20)(lambda: int(float(next(tr.find_all('td')
 st.set_page_config(page_title="Simulador Crédito UVA", layout="centered")
 
 #dolares
-oficial = 1270
+oficial = st.cache_data(ttl=60*60*20)(lambda: requests.get("https://dolarapi.com/v1/dolares/oficial").json())()
 blue = st.cache_data(ttl=60*60*20)(lambda: requests.get("https://dolarapi.com/v1/dolares/blue").json())()
 uva = valor_uva
 st.markdown(f"""
@@ -159,7 +159,7 @@ if calcular:
     ahorro_necesario = total_con_gastos - prestamo_maximo
     total_cuotas = (12 * anios_credito)
     cuota_mensual = cuota_sistema_frances(prestamo_maximo,interes_banco,total_cuotas)
-    ingresos_minimos = (cuota_mensual * oficial['venta']) / 0.25
+    ingresos_minimos = (cuota_mensual * 1270) / 0.25
 
     st.markdown('<div id="resultados"></div>', unsafe_allow_html=True)
     st.markdown("---")
