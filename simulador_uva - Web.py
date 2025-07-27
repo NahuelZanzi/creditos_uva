@@ -20,7 +20,7 @@ valor_uva = st.cache_data(ttl=60*60*20)(lambda: int(float(next(tr.find_all('td')
 st.set_page_config(page_title="Simulador Crédito UVA", layout="centered")
 
 #dolares
-oficial = st.cache_data(ttl=60*60*20)(lambda: requests.get("https://dolarapi.com/v1/dolares/oficial").json())()
+oficial = 1270
 blue = st.cache_data(ttl=60*60*20)(lambda: requests.get("https://dolarapi.com/v1/dolares/blue").json())()
 uva = valor_uva
 st.markdown(f"""
