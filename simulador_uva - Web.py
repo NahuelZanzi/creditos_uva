@@ -1,15 +1,15 @@
 import streamlit as st
 import pandas as pd
-import os
 import requests
-from datetime import datetime
 from PIL import Image
 from bs4 import BeautifulSoup
 
 
+   def format_num(n):
+        return f"{int(round(n)):,}".replace(",", ".")
 
+valor_uva = st.cache_data(ttl=60*60*20)(lambda: int(float(next(tr.find_all('td')[2].text.strip().replace('.', '').replace(',', '.') for tr in BeautifulSoup(requests.get("https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp", verify=False).text, 'html.parser').find_all('tr') if tr.find('td') and "Unidad de Valor Adquisitivo (UVA)" in tr.find('td').text))))()
 
-valor_uva = st.cache_data(ttl=60*60*20)(lambda: int(float(next(tr.find_all('td')[2].text.strip() for tr in __import__('bs4').BeautifulSoup(__import__('requests').get("https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables.asp", verify=False).text, 'html.parser').find_all('tr') if tr.find('td') and "Unidad de Valor Adquisitivo (UVA)" in tr.find('td').text).replace('.', '').replace(',', '.'))))()
 
 # Configuración de página
 st.set_page_config(page_title="Simulador Crédito UVA", layout="centered")
@@ -158,11 +158,6 @@ if calcular:
     total_cuotas = (12 * anios_credito)
     cuota_mensual = cuota_sistema_frances(prestamo_maximo,interes_banco,total_cuotas)
     ingresos_minimos = (cuota_mensual * oficial['venta']) / 0.25
-
-
-   
-    def format_num(n):
-        return f"{int(round(n)):,}".replace(",", ".")
 
     st.markdown('<div id="resultados"></div>', unsafe_allow_html=True)
     st.markdown("---")
