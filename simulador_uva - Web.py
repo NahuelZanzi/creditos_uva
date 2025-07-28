@@ -145,6 +145,8 @@ with col1:
 with col2:
     porcentaje_prestamo = st.number_input("💵 % que te presta el banco (%)", min_value=0, max_value=100, step=1, value=75, format="%d") / 100
     anios_credito = st.number_input("📅 Años del crédito", min_value=1, value=20)
+    relacion_cuota_ingreso = st.number_input("⚖️ Relación cuota/ingreso (%)", min_value=0.0, max_value=100.0, step=0.1, value=25.0, format="%.1f") / 100
+
 
 calcular = st.button("Calcular")
 
@@ -159,7 +161,7 @@ if calcular:
     ahorro_necesario = total_con_gastos - prestamo_maximo
     total_cuotas = (12 * anios_credito)
     cuota_mensual = cuota_sistema_frances(prestamo_maximo,interes_banco,total_cuotas)
-    ingresos_minimos = (cuota_mensual * oficial['venta']) / 0.25
+    ingresos_minimos = (cuota_mensual * oficial['venta']) / relacion_cuota_ingreso
 
     st.markdown('<div id="resultados"></div>', unsafe_allow_html=True)
     st.markdown("---")
