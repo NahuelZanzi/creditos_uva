@@ -80,7 +80,7 @@ st.markdown(
     <div style="position: fixed; left: 20px; top: 400px; background: white;
                 padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
                 width: 250px; z-index: 999; font-size: 16px; font-weight: bold; color: #222222;">
-        👤💻 Created by <a href="https://www.linkedin.com/in/nahuel-martin/" target="_blank">Nahuel Zanzi</a>
+        👨‍💻📊 Created by <a href="https://www.linkedin.com/in/nahuel-martin/" target="_blank">Nahuel Zanzi</a>
     </div>
     """,
     unsafe_allow_html=True
