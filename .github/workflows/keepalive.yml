@@ -1,0 +1,29 @@
+name: Keep Streamlit App Alive and Click "Calcular"
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+    - cron: '0 6 * * *'
+    - cron: '0 12 * * *'
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-chromedriver
+          sudo cp /usr/lib/chromium-browser/chromedriver /usr/bin
+          pip install selenium
+
+      - name: Run Script
+        run: python script.py
