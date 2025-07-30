@@ -71,6 +71,18 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+# Tarjeta LinkedIn separada estilo dólar
+st.markdown(
+    """
+    <div style="position: fixed; left: 20px; top: 300px; background: white;
+                padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                width: 250px; z-index: 999; font-size: 16px; font-weight: bold; color: #222222;">
+        👤 Created by <a href="https://www.linkedin.com/in/nahuel-martin/" target="_blank">Nahuel Martín</a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Estilos custom mejorados
 st.markdown("""
@@ -132,19 +144,6 @@ st.markdown(
     "¡Importante! Se trata de valores aproximados y **no representan el monto exacto que vas a pagar**.  \n"
     "Completá los valores abajo y presioná **Calcular**:"
 )
-
-# Tarjeta de LinkedIn arriba a la derecha
-st.markdown(
-    """
-    <div style="position: absolute; top: 10px; right: 10px; background-color: #f0f2f6; 
-                padding: 10px 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-                font-size: 14px;">
-        Created by <a href="https://www.linkedin.com/in/nahuel-martin/" target="_blank">Nahuel Martín</a>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
 
 valor_propiedad = st.number_input("💰 Valor de la propiedad (USD)", min_value=0, step=1000, format="%d")
 
@@ -210,17 +209,20 @@ if calcular:
         st.markdown('<div class="metric-label">💼 Ingresos mínimos requeridos</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="metric-value">ARS {format_num(ingresos_minimos)}</div>', unsafe_allow_html=True)
          
-# Info Bancos con fuente
+# Info Bancos con fuente clickeable
 st.markdown('<div id="info_banco"></div>', unsafe_allow_html=True)
 st.markdown(
     """
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2 style="margin: 0;">🏦 Información por Banco</h2>
-        <span style="font-size: 14px;">Fuente: @salinasandres 🐦</span>
+        <span style="font-size: 16px;">
+            Fuente: <a href="https://x.com/SalinasAndres" target="_blank">@salinasandres 🐦</a>
+        </span>
     </div>
     """,
     unsafe_allow_html=True
 )
+
 
 # Cargar datos
 url_excel = "https://github.com/NahuelZanzi/creditos_uva/raw/main/Comprar%20Propiedad%20-%20Credito%20UVA.xlsx"
