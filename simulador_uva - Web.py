@@ -71,18 +71,13 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Tarjeta LinkedIn arriba a la derecha
-st.markdown(
-    """
-    <div style="position: fixed; right: 20px; top: 20px; background: white;
-                padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                width: 250px; z-index: 999; font-size: 16px; font-weight: bold; color: #222222;">
-        👤 Created by <a href="https://www.linkedin.com/in/nahuel-martin/" target="_blank">Nahuel Martín</a>
+# Agregar LinkedIn arriba a la derecha con margen para evitar que lo tape el header
+st.markdown("""
+    <div style='position: fixed; top: 80px; right: 20px; background-color: #f0f2f6; padding: 10px 15px; border-radius: 10px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1); z-index: 100; font-size: 14px;'>
+        Creado por <a href='https://www.linkedin.com/in/nahuel-martin/' target='_blank' style='text-decoration: none; color: #0077b5; font-weight: bold;'>Nahuel Martín</a>
     </div>
-    """,
-    unsafe_allow_html=True
-)
-
+""", unsafe_allow_html=True)
 
 
 # Estilos custom mejorados
