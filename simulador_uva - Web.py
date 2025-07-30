@@ -133,6 +133,19 @@ st.markdown(
     "Completá los valores abajo y presioná **Calcular**:"
 )
 
+# Tarjeta de LinkedIn arriba a la derecha
+st.markdown(
+    """
+    <div style="position: absolute; top: 10px; right: 10px; background-color: #f0f2f6; 
+                padding: 10px 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+                font-size: 14px;">
+        Created by <a href="https://www.linkedin.com/in/nahuel-martin/" target="_blank">Nahuel Martín</a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
 valor_propiedad = st.number_input("💰 Valor de la propiedad (USD)", min_value=0, step=1000, format="%d")
 
 col1, col2 = st.columns(2)
@@ -196,9 +209,18 @@ if calcular:
     with col_right:
         st.markdown('<div class="metric-label">💼 Ingresos mínimos requeridos</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="metric-value">ARS {format_num(ingresos_minimos)}</div>', unsafe_allow_html=True)
-# Info Bancos
+         
+# Info Bancos con fuente
 st.markdown('<div id="info_banco"></div>', unsafe_allow_html=True)
-st.markdown("## 🏦 Información por Banco")
+st.markdown(
+    """
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0;">🏦 Información por Banco</h2>
+        <span style="font-size: 14px;">Fuente: @salinasandres 🐦</span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # Cargar datos
 url_excel = "https://github.com/NahuelZanzi/creditos_uva/raw/main/Comprar%20Propiedad%20-%20Credito%20UVA.xlsx"
