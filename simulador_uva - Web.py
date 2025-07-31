@@ -79,22 +79,22 @@ st.markdown(
     """
     <div style="
         position: fixed;
-        left: 50%;
+        left: 20px;
         top: 60px;
-        transform: translateX(-50%);
+        width: 250px;
         font-weight: bold;
-        font-size: 16px;
-        color: #222222;
+        font-size: 20px;
+        color: white;
         z-index: 999;
-        pointer-events: none;  /* para que no interfiera clics */
-        user-select: none;     /* que no se seleccione */
+        user-select: none;
     ">
         👨‍💻📊 Created by <a href="https://www.linkedin.com/in/nahuel-martin/" target="_blank" 
-        style="color: #222222; text-decoration: underline;">Nahuel Zanzi</a>
+        style="color: white; text-decoration: underline;">Nahuel Zanzi</a>
     </div>
     """,
     unsafe_allow_html=True
 )
+
 
 
 
