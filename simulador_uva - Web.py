@@ -77,19 +77,34 @@ st.markdown(f"""
 # Tarjeta LinkedIn separada estilo dólar (más arriba que la anterior)
 st.markdown(
     """
-    <div style="
-        position: sticky ;
+    <style>
+    .creator-text {
+        position: sticky;
         left: 20px;
         top: 60px;
         width: 250px;
         font-weight: bold;
         font-size: 14px;
-        color: white;
-        z-index: 999;
         user-select: none;
-    ">
-        👨‍💻📊 Created by <a href="https://www.linkedin.com/in/nahuel-martin/" target="_blank" 
-        style="color: white; text-decoration: underline;">Nahuel Zanzi</a>
+        z-index: 999;
+        color: black; /* default para modo claro */
+    }
+    .creator-text a {
+        color: black;
+        text-decoration: underline;
+    }
+    @media (prefers-color-scheme: dark) {
+        .creator-text {
+            color: white; /* blanco para modo oscuro */
+        }
+        .creator-text a {
+            color: white;
+        }
+    }
+    </style>
+
+    <div class="creator-text">
+        👨‍💻📊 Created by <a href="https://www.linkedin.com/in/nahuel-martin/" target="_blank">Nahuel Zanzi</a>
     </div>
     """,
     unsafe_allow_html=True
