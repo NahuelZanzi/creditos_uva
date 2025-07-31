@@ -78,7 +78,7 @@ st.markdown(f"""
 st.markdown(
     """
     <div style="
-        position: fixed;
+        position: sticky ;
         left: 20px;
         top: 60px;
         width: 250px;
