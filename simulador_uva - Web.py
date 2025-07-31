@@ -246,7 +246,7 @@ st.markdown(
     """
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2 style="margin: 0;">🏦 Información por Banco</h2>
-        <span style="font-size: 16px;">
+        <span style="font-size: 12px;">
             Fuente: <a href="https://x.com/SalinasAndres" target="_blank">@salinasandres 🐦</a>
         </span>
     </div>
