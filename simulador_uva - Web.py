@@ -83,7 +83,7 @@ st.markdown(
         top: 60px;
         width: 250px;
         font-weight: bold;
-        font-size: 20px;
+        font-size: 14px;
         color: white;
         z-index: 999;
         user-select: none;
