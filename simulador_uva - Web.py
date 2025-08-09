@@ -191,7 +191,7 @@ if 'mostrar_resultados' not in st.session_state:
     st.session_state.mostrar_resultados = False
 
 # --- Controles Compactos ---
-cols = st.columns([0.7, 2, 0.7]) s
+cols = st.columns([0.7, 2, 0.7]) 
 
 with cols[0]: 
     if st.button("Calcular"): 
@@ -365,3 +365,4 @@ if bancos_disponibles:
     )
 else:
     st.error("No se encontraron columnas de bancos en el archivo.")
+
