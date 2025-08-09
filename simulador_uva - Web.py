@@ -73,7 +73,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Tarjeta LinkedIn separada estilo dólar
+# Tarjeta LinkedIn 
 st.markdown(
     """
     <style>
@@ -109,7 +109,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Estilos custom mejorados
 st.markdown("""
     <style>
         .sidebar-nav {
@@ -192,25 +191,24 @@ if 'mostrar_resultados' not in st.session_state:
     st.session_state.mostrar_resultados = False
 
 # --- Controles Compactos ---
-cols = st.columns([0.7, 2, 0.7])  # Ajusta los anchos según necesites
+cols = st.columns([0.7, 2, 0.7]) s
 
 with cols[0]: 
     if st.button("Calcular"): 
         st.session_state.mostrar_resultados = True
 
 with cols[1]: 
-    # Label y radio en la misma línea
-    col_label, col_radio = st.columns([1, 3])  # Sub-columnas para alinear
+    col_label, col_radio = st.columns([1, 3]) 
     with col_label:
         st.write("") 
     with col_radio:
         opcion_moneda = st.radio(
-            "",  # Label vacío (ya lo pusimos manualmente)
+            "",  
             ["USD", "Pesos", "UVAs"],
             index=0,
             key="opcion_moneda",
             horizontal=True,
-            label_visibility="collapsed"  # Oculta el label por defecto
+            label_visibility="collapsed"  
         )
         # Actualiza las variables de sesión
         st.session_state.ver_en_usd = (opcion_moneda == "USD")
@@ -218,7 +216,6 @@ with cols[1]:
         st.session_state.ver_en_uva = (opcion_moneda == "UVAs")
 
 
-# Mostrar resultados si se ha hecho clic en Calcular
 if st.session_state.mostrar_resultados:
     # Cálculos
     gastos = valor_propiedad * costo_gastos
@@ -234,7 +231,7 @@ if st.session_state.mostrar_resultados:
 
     st.subheader("📊 Resultados del cálculo")
 
-# --- Función Format_Valor (5 líneas) ---
+# --- Función Format_Valor ---
     def format_valor(valor_usd):
         valor_pesos = valor_usd * st.session_state.custom_dolar
         if st.session_state.get('ver_en_pesos'): return f"ARS {format_num(int(valor_pesos))}"
@@ -275,7 +272,6 @@ if st.session_state.mostrar_resultados:
 st.markdown('<div id="variabilidad-cambio"></div>', unsafe_allow_html=True)
 st.subheader("📈 Variabilidad del tipo de cambio")
 
-# Input para el dólar esperado
 dolar_esperado = st.number_input(
     "Valor del dólar esperado al momento de comprar:",
     min_value=1,
@@ -291,7 +287,6 @@ if st.button("Ver Variación"):
         nuevo_valor_usd = prestamo_pesos / dolar_esperado
         diferencia = prestamo_maximo - nuevo_valor_usd
         
-        # Determinar texto según el signo
         if diferencia > 0:
             st.warning(f"⚠️ Con este valor del dólar te **faltarán** {format_num(abs(diferencia))} dólares")
         elif diferencia < 0:
@@ -331,23 +326,23 @@ if bancos_disponibles:
     df_filtrado = df[['Categoria', banco_seleccionado]].copy()
     df_filtrado.columns = ['Categoría', banco_seleccionado]
 
-    # Imágenes bancos (manteniendo tu código original)
-    ruta_imagenes = r"C:\Users\USUARIO\Desktop\UVA\Imagenes Banco"
+
+   # Mapeo banco -> ruta relativa a la carpeta del proyecto en git
     imagenes_bancos = {
-        "galicia": os.path.join(ruta_imagenes, "galicia.png"),
-        "comafi": os.path.join(ruta_imagenes, "comafi.png"),
-        "bbva": os.path.join(ruta_imagenes, "bbva.png"),
-        "hipotecario": os.path.join(ruta_imagenes, "hipotecario.png"),
-        "supervielle": os.path.join(ruta_imagenes, "Supervielle.png"),
-        "banco nación": os.path.join(ruta_imagenes, "nacion.png"),
-        "banco ciudad": os.path.join(ruta_imagenes, "ciudad.png"),
-        "santander": os.path.join(ruta_imagenes, "santander.png"),
-        "patagonia": os.path.join(ruta_imagenes, "patagonia.png"),
-        "macro": os.path.join(ruta_imagenes, "macro.png"),
-        "brubank": os.path.join(ruta_imagenes, "Brubank.png"),
-        "icbc": os.path.join(ruta_imagenes, "ICBC.png"),
-        "credicoop": os.path.join(ruta_imagenes, "credicoop.png"),
-        "banco del sol": os.path.join(ruta_imagenes, "banco del sol.png")
+        "galicia": "Imagenes Banco/galicia.png",
+        "comafi": "Imagenes Banco/comafi.png",
+        "bbva": "Imagenes Banco/bbva.png",
+        "hipotecario": "Imagenes Banco/hipotecario.png",
+        "supervielle": "Imagenes Banco/Supervielle.png",
+        "banco nación": "Imagenes Banco/nacion.png",
+        "banco ciudad": "Imagenes Banco/ciudad.png",
+        "santander": "Imagenes Banco/santander.png",
+        "patagonia": "Imagenes Banco/patagonia.png",
+        "macro": "Imagenes Banco/macro.png",
+        "brubank": "Imagenes Banco/Brubank.png",
+        "icbc": "Imagenes Banco/ICBC.png",
+        "credicoop": "Imagenes Banco/credicoop.png",
+        "banco del sol": "Imagenes Banco/banco del sol.png"
     }
 
     banco_key = banco_seleccionado.lower()
